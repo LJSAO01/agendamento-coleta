@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* ===== BASE (MOBILE FIRST) ===== */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 15px;
+      background-color: #f9f9f9;
+      line-height: 1.4;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 6px;
+      font-size: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #555;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 14px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    .form-row,
+    .doc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      background-color: #C62828;
+      color: #fff;
+      padding: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    button:disabled {
+      background-color: #999;
+      cursor: not-allowed;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* ===== MENSAGENS ===== */
+    #msgBox {
+      display: none;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .msg-success {
+      background: #e6f4ea;
+      color: #1e7e34;
+      border: 1px solid #b7dfc5;
+    }
+
+    .msg-error {
+      background: #fdecea;
+      color: #a71d2a;
+      border: 1px solid #f5c6cb;
+    }
+
+    .msg-warning {
+      background: #fff4e5;
+      color: #8a5a00;
+      border: 1px solid #ffe0b2;
+    }
+
+    /* ===== DESKTOP (SÓ A PARTIR DAQUI) ===== */
+    @media (min-width: 769px) {
+      body {
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      h1 { font-size: 26px; }
+      h2 { font-size: 18px; margin-bottom: 18px; }
+
+      input, select {
+        padding: 10px;
+        font-size: 15px;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 15px;
+        border-radius: 4px;
+      }
+
+      .form-row {
+        flex-direction: row;
+        gap: 16px;
+      }
+
+      .form-row > div {
+        flex: 1;
+      }
+
+      .doc-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .doc-input  { flex: 3; }
+      .doc-button { flex: 1.2; }
+      .doc-name   { flex: 3; }
+
+      .doc-button button {
+        margin-top: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Agendamento de Coleta</h1>
+<h2>JADLOG – LJ SÃO PAULO 01</h2>
+
+<div id="msgBox"></div>
+
+<form id="agendamentoForm">
+
+  <!-- REMETENTE -->
+  <div class="doc-row">
+    <div class="doc-input">
+      <label>CNPJ / CPF Remetente</label>
+      <input id="cnpj" placeholder="000.000.000-00 ou 00.000.000/0000-00" required>
+    </div>
+    <div class="doc-button">
+      <button type="button" onclick="buscarRemetente()">Buscar Remetente</button>
+    </div>
+    <div class="doc-name">
+      <label>Remetente</label>
+      <input id="remetente" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div>
+      <label>Solicitante</label>
+      <input id="solicitante" required>
+    </div>
+    <div>
+      <label>Telefone</label>
+      <input id="telefone" placeholder="(11) 91234-5678" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div><label>Endereço</label><input id="endereco" required></div>
+    <div><label>Bairro</label><input id="bairro" required></div>
+    <div><label>CEP</label><input id="cep" required></div>
+  </div>
+
+  <!-- DESTINATÁRIO -->
+  <div class="doc-row">
+    <div class="doc-input">
+      <label>CNPJ / CPF Destinatário</label>
+      <input id="cnpjDestinatario" placeholder="000.000.000-00 ou 00.000.000/0000-00" required>
+    </div>
+    <div class="doc-button">
+      <button type="button" onclick="buscarDestinatario()">Buscar Destinatário</button>
+    </div>
+    <div class="doc-name">
+      <label>Destinatário</label>
+      <input id="destinatario" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div><label>NF</label><input id="nf" required></div>
+    <div><label>Material</label><input id="material" required></div>
+    <div><label>Qtd. Volume</label><input id="QtdVolume" required></div>
+    <div><label>Medidas</label><input id="medidas" required></div>
+    <div><label>Peso</label><input id="peso" required></div>
+  </div>
+
+  <div class="form-row">
+    <div><label>Expediente</label><input id="funcionamento" required></div>
+    <div>
+      <label>Pagamento</label>
+      <select id="pagamento" required>
+        <option value="">-- selecione --</option>
+        <option>FOB</option>
+        <option>PIX</option>
+      </select>
+    </div>
+    <div>
+      <label>Cotação</label>
+      <select id="cotacao" required>
+        <option value="">-- selecione --</option>
+        <option>SIM</option>
+        <option>NÃO</option>
+      </select>
+    </div>
+    <div><label>Nº Cotação</label><input id="numero"></div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" id="btnAgendar">Agendar Coleta</button>
+  </div>
+
+</form>
+
+<script>
+/* ===== MENSAGENS ===== */
+function showMessage(type, text) {
+  msgBox.className = type === 'success' ? 'msg-success' :
+                     type === 'error'   ? 'msg-error' :
+                                          'msg-warning';
+  msgBox.textContent = text;
+  msgBox.style.display = 'block';
+}
+
+function showLoading(text) {
+  msgBox.className = 'msg-warning';
+  msgBox.textContent = text;
+  msgBox.style.display = 'block';
+}
+
+/* ===== MÁSCARAS ===== */
+function mascaraDocumento(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length <= 11) {
+    v = v.replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  } else {
+    v = v.replace(/^(\d{2})(\d)/, '$1.$2')
+         .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+         .replace(/\.(\d{3})(\d)/, '.$1/$2')
+         .replace(/(\d{4})(\d)/, '$1-$2');
+  }
+  input.value = v;
+}
+
+function mascaraTelefone(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length <= 10) {
+    v = v.replace(/^(\d{2})(\d)/, '($1) $2')
+         .replace(/(\d{4})(\d)/, '$1-$2');
+  } else {
+    v = v.replace(/^(\d{2})(\d)/, '($1) $2')
+         .replace(/(\d{5})(\d)/, '$1-$2');
+  }
+  input.value = v;
+}
+
+cnpj.addEventListener('input', () => mascaraDocumento(cnpj));
+cnpjDestinatario.addEventListener('input', () => mascaraDocumento(cnpjDestinatario));
+telefone.addEventListener('input', () => mascaraTelefone(telefone));
+
+/* ===== BUSCAS ===== */
+function buscarRemetente() {
+  const doc = cnpj.value.replace(/\D/g, '');
+  if (doc.length <= 11) {
+    showMessage('warning','Consulta disponível apenas para CNPJ.');
+    return;
+  }
+  showLoading('Buscando dados do remetente...');
+  google.script.run.withSuccessHandler(r => {
+    if (!r) return showMessage('error','CNPJ não encontrado.');
+    showMessage('success','Remetente localizado com sucesso.');
+    remetente.value = r.nome;
+    endereco.value = r.endereco;
+    bairro.value = r.bairro;
+    cep.value = r.cep;
+  }).buscarClientePorCNPJ(doc);
+}
+
+function buscarDestinatario() {
+  const doc = cnpjDestinatario.value.replace(/\D/g, '');
+  showLoading('Buscando dados do destinatário...');
+  google.script.run.withSuccessHandler(r => {
+    if (!r) return showMessage('error','Documento não encontrado.');
+    showMessage('success','Destinatário localizado com sucesso.');
+    destinatario.value = r.nome;
+  }).buscarClientePorCNPJ(doc);
+}
+
+/* ===== SUBMIT ===== */
+agendamentoForm.onsubmit = e => {
+  e.preventDefault();
+  btnAgendar.disabled = true;
+  btnAgendar.textContent = 'AGENDANDO... AGUARDAR!!!';
+  showLoading('Enviando agendamento...');
+
+  const v = id => document.getElementById(id).value;
+
+  google.script.run.withSuccessHandler(msg => {
+    showMessage('success', msg);
+    btnAgendar.disabled = false;
+    btnAgendar.textContent = 'Agendar Coleta';
+    e.target.reset();
+  }).processAgendamentoForm({
+    cnpj: v('cnpj'),
+    remetente: v('remetente'),
+    solicitante: v('solicitante'),
+    telefone: v('telefone'),
+    endereco: v('endereco'),
+    bairro: v('bairro'),
+    cep: v('cep'),
+    cnpjDestinatario: v('cnpjDestinatario'),
+    destinatario: v('destinatario'),
+    nf: v('nf'),
+    material: v('material'),
+    medidas: v('medidas'),
+    peso: v('peso'),
+    funcionamento: v('funcionamento'),
+    pagamento: v('pagamento'),
+    cotacao: v('cotacao'),
+    numero: v('numero')
+  });
+};
+</script>
+
+</body>
+</html>
