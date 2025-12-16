@@ -3,129 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Agendamento de Coleta</title>
 
 <style>
+*{box-sizing:border-box}
 body{
-  font-family: Arial, sans-serif;
-  background:#f4f4f4;
   margin:0;
   padding:20px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f3f3;
 }
-
-/* container */
 .container{
-  background:#fff;
   max-width:1100px;
   margin:auto;
-  padding:22px;
-  border-radius:8px;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  background:#fff;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
+h1{text-align:center;margin-bottom:5px}
+h2{text-align:center;color:#666;margin-bottom:25px;font-size:16px}
 
-h1{
-  text-align:center;
-  margin:5px 0;
-  font-size:28px;
-}
-h2{
-  text-align:center;
-  margin:0 0 20px;
-  font-size:16px;
-  color:#666;
-}
-
-/* labels */
-label{
-  font-weight:600;
-  margin-bottom:4px;
-  display:block;
-  font-size:14px;
-}
-
-/* inputs */
-input, select{
+label{font-weight:bold;margin-bottom:6px;display:block}
+input,select{
   width:100%;
-  padding:8px 10px;
+  padding:10px;
   border:1px solid #ccc;
-  border-radius:4px;
+  border-radius:5px;
   font-size:14px;
-  height:38px;
-  box-sizing:border-box;
 }
 
-/* linhas */
 .row{
   display:flex;
-  gap:14px;
-  margin-bottom:14px;
+  gap:15px;
+  margin-bottom:18px;
+}
+.col{flex:1}
+
+.doc-row{
+  display:flex;
+  gap:15px;
   align-items:flex-end;
+  margin-bottom:18px;
 }
+.doc-input{flex:3}
+.doc-btn{flex:1.5}
+.doc-name{flex:3}
 
-/* campos */
-.field{
-  flex:1;
-  min-width:0;
-}
-
-/* botão inline */
-.action{
-  flex:0 0 170px;
-}
-
-/* botões */
 button{
-  width:100%;
-  background:#C62828;
+  background:#c0392b;
   color:#fff;
-  padding:9px;
   border:none;
-  border-radius:4px;
-  font-size:14px;
-  cursor:pointer;
-  height:38px;
-}
-
-button:disabled{
-  background:#999;
-}
-
-/* botão principal */
-#btnSubmit{
-  margin-top:10px;
-  height:42px;
+  border-radius:6px;
+  padding:12px;
   font-size:15px;
+  cursor:pointer;
 }
+button:disabled{opacity:.6}
 
-/* mensagens */
 .msg{
   display:none;
-  padding:10px;
-  border-radius:4px;
-  margin-bottom:15px;
-  font-size:14px;
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:20px;
+  font-weight:bold;
 }
+.msg.ok{background:#e8f6ec;color:#1e7e34}
+.msg.err{background:#fdecea;color:#a71d2a}
 
-.ok{background:#e6f4ea;color:#1e7e34}
-.err{background:#fdecea;color:#a71d2a}
-.warn{background:#fff4e5;color:#8a5a00}
-
-/* mobile */
 @media(max-width:768px){
-  .row{
-    flex-direction:column;
-    align-items:stretch;
-  }
-  .action{
-    flex:1;
-  }
+  .row,.doc-row{flex-direction:column}
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
+<div class="container">
 <h1>Agendamento de Coleta</h1>
 <h2>JADLOG – LJ SÃO PAULO 01</h2>
 
@@ -134,80 +89,106 @@ button:disabled{
 <form id="form">
 
 <!-- REMETENTE -->
-<div class="row">
-  <div class="field">
+<div class="doc-row">
+  <div class="doc-input">
     <label>CNPJ / CPF Remetente</label>
     <input id="cnpj" placeholder="00.000.000/0000-00 ou 000.000.000-00" required>
   </div>
-  <div class="action">
-    <button type="button" onclick="buscarCNPJ()">Buscar Remetente</button>
+  <div class="doc-btn">
+    <button type="button" onclick="buscarRemetente()">Buscar Remetente</button>
   </div>
-  <div class="field">
+  <div class="doc-name">
     <label>Remetente</label>
     <input id="remetente" required>
   </div>
 </div>
 
 <div class="row">
-  <div class="field">
+  <div class="col">
     <label>Solicitante</label>
     <input id="solicitante" required>
   </div>
-  <div class="field">
+  <div class="col">
     <label>Telefone</label>
     <input id="telefone" placeholder="(11) 00000-0000" required>
   </div>
 </div>
 
 <div class="row">
-  <div class="field"><label>Endereço</label><input id="endereco" required></div>
-  <div class="field"><label>Bairro</label><input id="bairro" required></div>
-  <div class="field"><label>CEP</label><input id="cep" required></div>
+  <div class="col">
+    <label>Endereço</label>
+    <input id="endereco" required>
+  </div>
+  <div class="col">
+    <label>Bairro</label>
+    <input id="bairro" required>
+  </div>
+  <div class="col">
+    <label>CEP</label>
+    <input id="cep" required>
+  </div>
 </div>
 
 <!-- DESTINATÁRIO -->
-<div class="row">
-  <div class="field">
+<div class="doc-row">
+  <div class="doc-input">
     <label>CNPJ / CPF Destinatário</label>
     <input id="cnpjDestinatario" placeholder="00.000.000/0000-00 ou 000.000.000-00" required>
   </div>
-  <div class="action">
+  <div class="doc-btn">
     <button type="button" onclick="buscarDestinatario()">Buscar Destinatário</button>
   </div>
-  <div class="field">
+  <div class="doc-name">
     <label>Destinatário</label>
     <input id="destinatario" required>
   </div>
 </div>
 
 <div class="row">
-  <div class="field"><label>NF</label><input id="nf" required></div>
-  <div class="field"><label>Material</label><input id="material" required></div>
-  <div class="field"><label>Medidas</label><input id="medidas" placeholder="AxLxC" required></div>
-  <div class="field"><label>Peso</label><input id="peso" required></div>
+  <div class="col">
+    <label>NF</label>
+    <input id="nf" required>
+  </div>
+  <div class="col">
+    <label>Material</label>
+    <input id="material" required>
+  </div>
+  <div class="col">
+    <label>Medidas</label>
+    <input id="medidas" placeholder="AxLxC" required>
+  </div>
+  <div class="col">
+    <label>Peso</label>
+    <input id="peso" required>
+  </div>
 </div>
 
 <div class="row">
-  <div class="field"><label>Expediente</label><input id="funcionamento" required></div>
-  <div class="field">
+  <div class="col">
+    <label>Expediente</label>
+    <input id="funcionamento" required>
+  </div>
+  <div class="col">
     <label>Pagamento</label>
     <select id="pagamento">
-      <option value="FOB">FOB</option>
-      <option value="PIX">PIX</option>
+      <option>FOB</option>
+      <option>PIX</option>
     </select>
   </div>
-  <div class="field">
+  <div class="col">
     <label>Cotação</label>
     <select id="cotacao">
-      <option value="NÃO">NÃO</option>
-      <option value="SIM">SIM</option>
+      <option>NÃO</option>
+      <option>SIM</option>
     </select>
   </div>
-  <div class="field"><label>Nº Cotação</label><input id="numero"></div>
+  <div class="col">
+    <label>Nº Cotação</label>
+    <input id="numero">
+  </div>
 </div>
 
-<button id="btnSubmit" type="submit">Agendar Coleta</button>
-
+<button id="btnSubmit" style="width:100%">Agendar Coleta</button>
 </form>
 </div>
 
@@ -222,7 +203,6 @@ function show(t,c){
   msg.style.display='block';
 }
 
-/* máscaras */
 function maskDoc(el){
   let v=el.value.replace(/\D/g,'');
   el.value=v.length<=11
@@ -241,38 +221,23 @@ cnpj.oninput=()=>maskDoc(cnpj);
 cnpjDestinatario.oninput=()=>maskDoc(cnpjDestinatario);
 telefone.oninput=()=>maskTel(telefone);
 
-/* buscas */
-function buscarCNPJ(){
-  const d=cnpj.value.replace(/\D/g,'');
-  if(d.length!==14){show('Consulta disponível apenas para CNPJ.','warn');return;}
-  show('Buscando dados do CNPJ...','warn');
-  fetch(API,{method:'POST',body:JSON.stringify({action:'buscarCNPJ',cnpj:d})})
-  .then(r=>r.json())
-  .then(res=>{
-    if(!res){show('CNPJ não encontrado','err');return;}
-    remetente.value=res.nome;
-    endereco.value=res.endereco;
-    bairro.value=res.bairro;
-    cep.value=res.cep;
-    show('CNPJ localizado com sucesso','ok');
-  });
-}
-function buscarDestinatario(){
-  const d=cnpjDestinatario.value.replace(/\D/g,'');
-  fetch(API,{method:'POST',body:JSON.stringify({action:'buscarCNPJ',cnpj:d})})
-  .then(r=>r.json())
-  .then(res=>{
-    if(!res){show('Documento não encontrado','err');return;}
-    destinatario.value=res.nome;
-    show('Destinatário localizado','ok');
-  });
+function cepSP(cep){
+  const n=cep.replace(/\D/g,'').substring(0,5);
+  return (n>=1000&&n<=5999)||(n>=8000&&n<=8499);
 }
 
-/* submit */
 form.onsubmit=e=>{
   e.preventDefault();
+
+  if(!cepSP(cep.value)){
+    show('Agendamento permitido apenas para São Paulo – Capital.','err');
+    window.scrollTo({top:0,behavior:'smooth'});
+    return;
+  }
+
   btn.disabled=true;
   btn.innerText='AGENDANDO... AGUARDAR!!!';
+
   const v=id=>document.getElementById(id).value;
 
   fetch(API,{
@@ -303,6 +268,7 @@ form.onsubmit=e=>{
   .then(r=>r.text())
   .then(t=>{
     show(t,'ok');
+    window.scrollTo({top:0,behavior:'smooth'});
     btn.disabled=false;
     btn.innerText='Agendar Coleta';
     form.reset();
