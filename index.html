@@ -12,6 +12,8 @@ body{
   margin:0;
   padding:20px;
 }
+
+/* container */
 .container{
   background:#fff;
   max-width:1100px;
@@ -20,33 +22,103 @@ body{
   border-radius:8px;
   box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
-h1{text-align:center;margin:5px 0;font-size:28px}
-h2{text-align:center;margin:0 0 20px;font-size:16px;color:#666}
 
-label{font-weight:600;margin-bottom:4px;display:block;font-size:14px}
-input,select{
-  width:100%;padding:8px 10px;border:1px solid #ccc;
-  border-radius:4px;font-size:14px;height:38px;box-sizing:border-box;
+h1{
+  text-align:center;
+  margin:5px 0;
+  font-size:28px;
 }
-.row{display:flex;gap:14px;margin-bottom:14px;align-items:flex-end}
-.field{flex:1;min-width:0}
-.action{flex:0 0 170px}
+h2{
+  text-align:center;
+  margin:0 0 20px;
+  font-size:16px;
+  color:#666;
+}
 
+/* labels */
+label{
+  font-weight:600;
+  margin-bottom:4px;
+  display:block;
+  font-size:14px;
+}
+
+/* inputs */
+input, select{
+  width:100%;
+  padding:8px 10px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  font-size:14px;
+  height:38px;
+  box-sizing:border-box;
+}
+
+/* linhas */
+.row{
+  display:flex;
+  gap:14px;
+  margin-bottom:14px;
+  align-items:flex-end;
+}
+
+/* campos */
+.field{
+  flex:1;
+  min-width:0;
+}
+
+/* botão inline */
+.action{
+  flex:0 0 170px;
+}
+
+/* botões */
 button{
-  width:100%;background:#C62828;color:#fff;padding:9px;
-  border:none;border-radius:4px;font-size:14px;cursor:pointer;height:38px;
+  width:100%;
+  background:#C62828;
+  color:#fff;
+  padding:9px;
+  border:none;
+  border-radius:4px;
+  font-size:14px;
+  cursor:pointer;
+  height:38px;
 }
-button:disabled{background:#999}
-#btnSubmit{margin-top:10px;height:42px;font-size:15px}
 
-.msg{display:none;padding:10px;border-radius:4px;margin-bottom:15px;font-size:14px}
+button:disabled{
+  background:#999;
+}
+
+/* botão principal */
+#btnSubmit{
+  margin-top:10px;
+  height:42px;
+  font-size:15px;
+}
+
+/* mensagens */
+.msg{
+  display:none;
+  padding:10px;
+  border-radius:4px;
+  margin-bottom:15px;
+  font-size:14px;
+}
+
 .ok{background:#e6f4ea;color:#1e7e34}
 .err{background:#fdecea;color:#a71d2a}
 .warn{background:#fff4e5;color:#8a5a00}
 
+/* mobile */
 @media(max-width:768px){
-  .row{flex-direction:column;align-items:stretch}
-  .action{flex:1}
+  .row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .action{
+    flex:1;
+  }
 }
 </style>
 </head>
@@ -61,10 +133,11 @@ button:disabled{background:#999}
 
 <form id="form">
 
+<!-- REMETENTE -->
 <div class="row">
   <div class="field">
     <label>CNPJ / CPF Remetente</label>
-    <input id="cnpj" required>
+    <input id="cnpj" placeholder="00.000.000/0000-00 ou 000.000.000-00" required>
   </div>
   <div class="action">
     <button type="button" onclick="buscarCNPJ()">Buscar Remetente</button>
@@ -76,8 +149,14 @@ button:disabled{background:#999}
 </div>
 
 <div class="row">
-  <div class="field"><label>Solicitante</label><input id="solicitante" required></div>
-  <div class="field"><label>Telefone</label><input id="telefone" required></div>
+  <div class="field">
+    <label>Solicitante</label>
+    <input id="solicitante" required>
+  </div>
+  <div class="field">
+    <label>Telefone</label>
+    <input id="telefone" placeholder="(11) 00000-0000" required>
+  </div>
 </div>
 
 <div class="row">
@@ -86,10 +165,11 @@ button:disabled{background:#999}
   <div class="field"><label>CEP</label><input id="cep" required></div>
 </div>
 
+<!-- DESTINATÁRIO -->
 <div class="row">
   <div class="field">
     <label>CNPJ / CPF Destinatário</label>
-    <input id="cnpjDestinatario" required>
+    <input id="cnpjDestinatario" placeholder="00.000.000/0000-00 ou 000.000.000-00" required>
   </div>
   <div class="action">
     <button type="button" onclick="buscarDestinatario()">Buscar Destinatário</button>
@@ -103,8 +183,7 @@ button:disabled{background:#999}
 <div class="row">
   <div class="field"><label>NF</label><input id="nf" required></div>
   <div class="field"><label>Material</label><input id="material" required></div>
-  <div class="field"><label>Qtd.</label><input id="qtd" required></div>
-  <div class="field"><label>Medidas</label><input id="medidas" required></div>
+  <div class="field"><label>Medidas</label><input id="medidas" placeholder="AxLxC" required></div>
   <div class="field"><label>Peso</label><input id="peso" required></div>
 </div>
 
@@ -112,11 +191,17 @@ button:disabled{background:#999}
   <div class="field"><label>Expediente</label><input id="funcionamento" required></div>
   <div class="field">
     <label>Pagamento</label>
-    <select id="pagamento"><option>FOB</option><option>PIX</option></select>
+    <select id="pagamento">
+      <option value="FOB">FOB</option>
+      <option value="PIX">PIX</option>
+    </select>
   </div>
   <div class="field">
     <label>Cotação</label>
-    <select id="cotacao"><option>NÃO</option><option>SIM</option></select>
+    <select id="cotacao">
+      <option value="NÃO">NÃO</option>
+      <option value="SIM">SIM</option>
+    </select>
   </div>
   <div class="field"><label>Nº Cotação</label><input id="numero"></div>
 </div>
@@ -127,7 +212,7 @@ button:disabled{background:#999}
 </div>
 
 <script>
-const API='SUA_URL_DO_WEBAPP';
+const API='https://script.google.com/macros/s/AKfycbzJrU7q9rq2DZfubZfRhKmCKjiuhm3LErnZ0TGSZoZPcfXOAo57HU2JEZ0WaanXKpJt/exec';
 const msg=document.getElementById('msg');
 const btn=document.getElementById('btnSubmit');
 
@@ -137,14 +222,31 @@ function show(t,c){
   msg.style.display='block';
 }
 
+/* máscaras */
+function maskDoc(el){
+  let v=el.value.replace(/\D/g,'');
+  el.value=v.length<=11
+    ?v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2')
+    :v.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');
+}
+function maskTel(el){
+  let v=el.value.replace(/\D/g,'');
+  el.value=v.length<=10
+    ?v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2')
+    :v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+}
+
+cnpj.oninput=()=>maskDoc(cnpj);
+cnpjDestinatario.oninput=()=>maskDoc(cnpjDestinatario);
+telefone.oninput=()=>maskTel(telefone);
+
+/* buscas */
 function buscarCNPJ(){
   const d=cnpj.value.replace(/\D/g,'');
-  if(d.length!==14){show('Consulta apenas para CNPJ','warn');return;}
-  fetch(API,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({action:'buscarCNPJ',cnpj:d})
-  })
+  if(d.length!==14){show('Consulta disponível apenas para CNPJ.','warn');return;}
+  show('Buscando dados do CNPJ...','warn');
+  fetch(API,{method:'POST',body:JSON.stringify({action:'buscarCNPJ',cnpj:d})})
   .then(r=>r.json())
   .then(res=>{
     if(!res){show('CNPJ não encontrado','err');return;}
@@ -152,18 +254,12 @@ function buscarCNPJ(){
     endereco.value=res.endereco;
     bairro.value=res.bairro;
     cep.value=res.cep;
-    show('CNPJ localizado','ok');
+    show('CNPJ localizado com sucesso','ok');
   });
 }
-
 function buscarDestinatario(){
   const d=cnpjDestinatario.value.replace(/\D/g,'');
-  if(d.length!==14){show('Consulta apenas para CNPJ','warn');return;}
-  fetch(API,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({action:'buscarCNPJ',cnpj:d})
-  })
+  fetch(API,{method:'POST',body:JSON.stringify({action:'buscarCNPJ',cnpj:d})})
   .then(r=>r.json())
   .then(res=>{
     if(!res){show('Documento não encontrado','err');return;}
@@ -172,16 +268,15 @@ function buscarDestinatario(){
   });
 }
 
+/* submit */
 form.onsubmit=e=>{
   e.preventDefault();
   btn.disabled=true;
-  btn.innerText='AGENDANDO...';
-
+  btn.innerText='AGENDANDO... AGUARDAR!!!';
   const v=id=>document.getElementById(id).value;
 
   fetch(API,{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       action:'agendar',
       payload:{
@@ -201,8 +296,7 @@ form.onsubmit=e=>{
         funcionamento:v('funcionamento'),
         pagamento:v('pagamento'),
         cotacao:v('cotacao'),
-        numero:v('numero'),
-        qtd:v('qtd')
+        numero:v('numero')
       }
     })
   })
